@@ -1,0 +1,9 @@
+.headerIcons {
+  color: #ffffff !important;
+  svg {
+    color: #ffffff !important;
+  }
+  &.active {
+    color: #404040 !important;
+  }
+}
