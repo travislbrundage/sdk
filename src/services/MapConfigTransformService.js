@@ -183,7 +183,11 @@ class MapConfigTransformService {
       thumbnail: thumbnail
     };
   }
-  transform(data, opt_errors, opt_tileServices) {
+  transform(data, opt_errors, opt_tileServices, opt_crossOrigin) {
+    var crossOrigin = 'anonymous';
+    if (opt_CrossOrigin === true) {
+      crossOrigin = 'use-credentials';
+    }
     var i, ii, layers = [];
     var groups = {};
     for (i = 0, ii = data.map.layers.length; i < ii; ++i) {
@@ -219,7 +223,7 @@ class MapConfigTransformService {
         layerConfig.source = {
           type: 'XYZ',
           properties: {
-            crossOrigin: 'anonymous',
+            crossOrigin: crossOrigin,
             urls: xyzUrls
           }
         };
@@ -235,7 +239,7 @@ class MapConfigTransformService {
         layerConfig.source = {
           type: 'OSM',
           properties: {
-            crossOrigin: 'anonymous'
+            crossOrigin: crossOrigin
           }
         };
       } else if (source.ptype === 'gxp_arcrestsource') {
@@ -243,7 +247,7 @@ class MapConfigTransformService {
         layerConfig.source = {
           type: 'TileArcGISRest',
           properties: {
-            crossOrigin: 'anonymous',
+            crossOrigin: crossOrigin,
             urls: [url],
             params: {
               LAYERS: layer.layerid,
@@ -287,7 +291,7 @@ class MapConfigTransformService {
         layerConfig.source = {
           type: 'TileWMS',
           properties: {
-            crossOrigin: 'anonymous',
+            crossOrigin: crossOrigin,
             params: params,
             urls: [url]
           }
