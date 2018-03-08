@@ -352,6 +352,9 @@ class MapConfigTransformService {
         layerConfig = undefined;
       }
       if (layerConfig !== undefined) {
+        if (typeof source['use_proxy'] !== 'undefined' && source['use_proxy'] !== '') {
+           layerConfig.source['use_proxy'] = source['use_proxy'];
+        }
         if (layer.group) {
           if (layer.group === gxpGroup) {
             layerConfig.properties.type = 'base';
