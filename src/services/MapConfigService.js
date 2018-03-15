@@ -60,24 +60,22 @@ class MapConfigService {
       return source;
     }
     var sourceObj = new ol.source[config.type](props);
-    
-    // Always proxy if config's use_proxy = True
-    // otherwise use original conditional
-    if (opt_proxy && typeof config['use_proxy'] !== "undefined" && config['use_proxy'] === true) {
+    var setTileLoadFunctionOnSourceObj = function(sourceObj) {
       sourceObj.setTileLoadFunction((function() {
         var tileLoadFn = sourceObj.getTileLoadFunction();
         return function(tile, src) {
           tileLoadFn(tile, util.getProxiedUrl(src, opt_proxy));
         };
-      })());            
+      })());
+    };
+    
+    // Always proxy if config's use_proxy = True
+    // otherwise use original conditional
+    if (opt_proxy && typeof config['use_proxy'] !== "undefined" && config['use_proxy'] === true) {
+      setTileLoadFunctionOnSourceObj(sourceObj);
     } else if (opt_proxy && config.type === 'TileWMS') {
       sourceObj.once('tileloaderror', function() {
-        sourceObj.setTileLoadFunction((function() {
-          var tileLoadFn = sourceObj.getTileLoadFunction();
-          return function(tile, src) {
-            tileLoadFn(tile, util.getProxiedUrl(src, opt_proxy));
-          };
-        })());
+        setTileLoadFunctionOnSourceObj(sourceObj);
       });
     }
     return sourceObj;
