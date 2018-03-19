@@ -95,6 +95,10 @@ class MapConfigService {
     if (sourceConfig) {
       var source = this.generateSourceFromConfig(map, sourceConfig, opt_proxy, layerConfig.url, layerConfig.name);
       layer.setSource(source);
+      layer.use_proxy = sourceConfig.use_proxy;
+      if (opt_proxy !== 'undefined') {
+        layer.opt_proxy = opt_proxy;
+      }
     }
     return layer;
   }
