@@ -68,10 +68,10 @@ class MapConfigService {
         };
       })());
     };
-    
+
     // Always proxy if config's use_proxy = True
     // otherwise use original conditional
-    if (opt_proxy && typeof config['use_proxy'] !== "undefined" && config['use_proxy'] === true) {
+    if (opt_proxy && typeof config['use_proxy'] !== 'undefined' && config['use_proxy'] === true) {
       setTileLoadFunctionOnSourceObj(sourceObj);
     } else if (opt_proxy && config.type === 'TileWMS') {
       sourceObj.once('tileloaderror', function() {
