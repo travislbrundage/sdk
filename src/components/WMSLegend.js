@@ -122,7 +122,7 @@ class WMSLegend extends React.PureComponent {
       layer: params.LAYERS,
       '_olSalt': this.state.salt,
       style: params.STYLES ? params.STYLES : '',
-      versoin: params.VERSION || '1.1.1'
+      version: params.VERSION || '1.1.1'
     };
     if (params.SLD_BODY) {
       query.sld_body = params.SLD_BODY;
