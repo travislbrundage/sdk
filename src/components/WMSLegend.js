@@ -129,8 +129,8 @@ class WMSLegend extends React.PureComponent {
     }
     url.set('query', query);
     // proxy the legend graphic
-    if (typeof layer.opt_proxy !== 'undefined' && typeof layer.use_proxy !== 'undefined' && layer.use_proxy === true) {
-      url = util.getProxiedUrl(url, layer.opt_proxy);
+    if (typeof source.opt_proxy !== 'undefined' && typeof source.use_proxy !== 'undefined' && source.use_proxy === true) {
+      url = util.getProxiedUrl(url, source.opt_proxy);
     }
     var legendUrl = (!this.state.dynamic && params.STYLES === undefined && params.SLD_BODY === undefined && layer.get('legendUrl')) ? layer.get('legendUrl') : url.toString();
     return (<img style={this.props.style} className={classNames('sdk-component wms-legend', this.props.className)} src={legendUrl} />);

@@ -94,11 +94,11 @@ class MapConfigService {
     var sourceConfig = config.source;
     if (sourceConfig) {
       var source = this.generateSourceFromConfig(map, sourceConfig, opt_proxy, layerConfig.url, layerConfig.name);
-      layer.setSource(source);
-      layer.use_proxy = sourceConfig.use_proxy;
+      source.use_proxy = sourceConfig.use_proxy;
       if (typeof opt_proxy !== 'undefined') {
-        layer.opt_proxy = opt_proxy;
+        source.opt_proxy = opt_proxy;
       }
+      layer.setSource(source);
     }
     return layer;
   }
