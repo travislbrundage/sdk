@@ -13,6 +13,7 @@
 import React from 'react';
 import ol from 'openlayers';
 import classNames from 'classnames';
+import util from '../util';
 import {ListItem} from 'material-ui/List';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import ArcGISRestService from '../services/ArcGISRestService';
@@ -54,6 +55,10 @@ class ArcGISRestLegend extends React.PureComponent {
     var layer = this.props.layer;
     var source = layer.getSource();
     var url = source.getUrls()[0];
+    // proxy the legend graphic
+    if (typeof source.opt_proxy !== 'undefined' && typeof source.use_proxy !== 'undefined' && source.use_proxy === true) {
+      url = util.getProxiedUrl(url, source.opt_proxy);
+    }
     var me = this;
     ArcGISRestService.getLegend(url, function(jsonData) {
       if (me._unmounted !== true) {
