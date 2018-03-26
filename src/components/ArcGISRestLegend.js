@@ -54,13 +54,8 @@ class ArcGISRestLegend extends React.PureComponent {
   componentDidMount() {
     var layer = this.props.layer;
     var source = layer.getSource();
-    var url = source.getUrls()[0];
-    // proxy the legend graphic
-    if (typeof source.opt_proxy !== 'undefined' && typeof source.use_proxy !== 'undefined' && source.use_proxy === true) {
-      url = util.getProxiedUrl(url, source.opt_proxy);
-    }
     var me = this;
-    ArcGISRestService.getLegend(url, function(jsonData) {
+    ArcGISRestService.getLegend(source, function(jsonData) {
       if (me._unmounted !== true) {
         me.setState({legendInfo: jsonData});
       }

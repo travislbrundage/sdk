@@ -70,17 +70,24 @@ class ArcGISRestService {
       onSuccess.call(this, this.parseCapabilities(jsonData));
     }, onFailure, this);
   }
-  getLegendUrl(url) {
+  getLegendUrl(source) {
+    var url = source.getUrls()[0];
     var urlObj = new URL(url + '/legend');
+
     urlObj.set('query', {
       f: 'json',
       pretty: 'false',
       callback: '__cbname__'
     });
-    return urlObj.toString();
+    var legendUrl = urlObj.toString();
+    // proxy the legend graphic url
+    if (typeof source.opt_proxy !== 'undefined' && typeof source.use_proxy !== 'undefined' && source.use_proxy === true) {
+      legendUrl = util.getProxiedUrl(legendUrl, source.opt_proxy);
+    }
+    return legendUrl;
   }
-  getLegend(url, onSuccess) {
-    util.doJSONP(this.getLegendUrl(url), function(jsonData) {
+  getLegend(source, onSuccess) {
+    util.doJSONP(this.getLegendUrl(source), function(jsonData) {
       onSuccess.call(this, jsonData);
     }, undefined, this);
   }

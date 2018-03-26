@@ -93,8 +93,8 @@ describe('ArcGISRestService', function() {
   });
 
   it('creates correct legend url', function() {
-    var url = ArcGISRestService.getLegendUrl('http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer');
-    assert.equal(url, 'http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer/legend?f=json&pretty=false&callback=__cbname__');
+    var legendUrl = ArcGISRestService.getLegendUrl(layer.getSource());
+    assert.equal(legendUrl, 'http://sampleserver1.arcgisonline.com/ArcGIS/rest/services/Demographics/ESRI_Population_World/MapServer/legend?f=json&pretty=false&callback=__cbname__');
   });
 
   it('creates correct get feature url', function() {
