@@ -250,7 +250,7 @@ class MapConfigTransformService {
             crossOrigin: crossOrigin,
             urls: [url],
             params: {
-              LAYERS: layer.layerid,
+              LAYERS: 'show:' + layer.layerid,
               FORMAT: layer.format
             }
           }
