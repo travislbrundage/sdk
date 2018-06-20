@@ -29,6 +29,7 @@ class ArcGISRestService {
       isRemovable: true,
       wfsInfo: layer.Queryable,
       popupInfo: layer.Queryable ? '#AllAttributes' : undefined,
+      // TODO: Manually set tileLoadFunction in here
       source: new ol.source.TileArcGISRest({
         urls: [url],
         params: {

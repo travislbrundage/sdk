@@ -74,6 +74,12 @@ class WMSService {
         TILED: true
       }
     });
+    // Append access_token to Bearer header
+    // TODO: This is the default function, needs fixing
+    var oAuthTileLoadFunction = function(imageTile, src) {
+      imageTile.getImage().src = src;
+    };
+    source.setTileLoadFunction(oAuthTileLoadFunction);
     if (opt_proxy) {
       source.once('tileloaderror', function() {
         source.setTileLoadFunction((function() {
