@@ -171,7 +171,7 @@ class MapConfigTransformService {
       thumbnail = 'https://a.tile.openstreetmap.org/0/0/0.png';
     } else {
       if (layerConfig.source.properties.urls) {
-        thumbnail = layerConfig.source.properties.urls[0].replace('{z}', '0').replace('{y}', '0').replace('{x}', '0');
+        thumbnail = layerConfig.source.properties.urls[0].replace(/{-?z}/, '0').replace(/{-?y}/, '0').replace(/{-?x}/, '0');
       }
     }
     return {
