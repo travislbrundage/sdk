@@ -280,7 +280,13 @@ class MapConfigTransformService {
           params.TILED = 'TRUE';
         }
         if (layer.styles) {
-          params.STYLES = layer.styles;
+          //NOTE: Handle geonode1.8.1+ response ex: {...,"styles":"[u'other_healthcare_60cfefd3']",...}
+          const _styles = JSON.parse(layer.styles)
+          if (typeof _styles === "string") {
+              params.STYLES = _styles;
+          } else if (Array.isArray(_styles)) {
+              params.STYLES = _styles.join(",");
+          }
         }
         if (layer.format) {
           params.FORMAT = layer.format;
