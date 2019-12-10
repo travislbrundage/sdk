@@ -63,6 +63,11 @@ import AttributionControl from 'ol/control/attribution';
 
 import LoadingStrategy from 'ol/loadingstrategy';
 
+import Graticule from 'ol/graticule';
+import Stroke from 'ol/style/stroke';
+import Text from 'ol/style/text';
+import Fill from 'ol/style/fill';
+
 import { updateLayer, setView, setRotation } from '../actions/map';
 import { INTERACTIONS, LAYER_VERSION_KEY, SOURCE_VERSION_KEY, TIME_KEY, TIME_ATTRIBUTE_KEY } from '../constants';
 import { dataVersionKey } from '../reducers/map';
@@ -567,6 +572,62 @@ export class Map extends React.Component {
       // this uses the canvas api to get the map image
       this.map.once('postcompose', (evt) => { evt.context.canvas.toBlob(this.props.onExportImage); }, this);
       this.map.renderSync();
+    }
+
+    if (nextProps.map.graticule) {
+      var lonFormatter = function lonFormatter(lon) {
+        var formattedLon = Math.abs(Math.round(lon * 100) / 100);
+        formattedLon += "°00'";
+        formattedLon += lon < 0 ? 'W' : lon > 0 ? 'E' : '';
+        return formattedLon;
+      };
+
+      var latFormatter = function latFormatter(lat) {
+        var formattedLat = Math.abs(Math.round(lat * 100) / 100);
+        formattedLat += "°00'";
+        formattedLat += lat < 0 ? 'S' : lat > 0 ? 'N' : '';
+        return formattedLat;
+      };
+
+      if (!this.graticule) {
+        this.graticule = new Graticule({
+          // the style to use for the lines, optional.
+          strokeStyle: new Stroke({
+            color: 'rgba(255,120,0,0.9)',
+            width: 2,
+            lineDash: [0.5, 4]
+          }),
+          showLabels: true,
+          lonLabelFormatter: lonFormatter,
+          latLabelFormatter: latFormatter,
+          //label positions
+          lonLabelPosition: 0.05,
+          latLabelPosition: 0.95,
+
+          //style for longitude label
+          lonLabelStyle: new Text({
+            font: '10px Verdana',
+            fill: new Fill({
+              color: 'rgba(0,0,0,1)'
+            })
+          }),
+
+          //style for latitude label
+          latLabelStyle: new Text({
+            font: '10px Verdana',
+            offsetX: -2,
+            textBaseline: 'bottom',
+            fill: new Fill({
+              color: 'rgba(0,0,0,1)'
+            })
+          })
+        });
+      }
+      this.graticule.setMap(this.map);
+    } else {
+      if (this.graticule) {
+        this.graticule.setMap(null);
+      }
     }
 
     // This should always return false to keep
@@ -1226,7 +1287,7 @@ export class Map extends React.Component {
 
 
     // check for any interactions
-    if (this.props.drawing && this.props.drawing.interaction) {
+    if (this.props.drawing && this.props.drawing.interaction && this.props.graticule) {
       this.updateInteraction(this.props.drawing);
     }
   }
